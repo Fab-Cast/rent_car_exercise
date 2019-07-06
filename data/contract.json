@@ -1,0 +1,18 @@
+{
+    "contract":{
+        "car":{
+            "modele":"Audi A5",
+            "plate_registration":"7232XV31",
+            "kilometers":32000,
+            "defects":["Rayure sur le capot","Feu stop cassé","Antenne absente"]
+        },
+        "user":{
+            "name":"Doe",
+            "firstname":"John"
+        },
+        "rent":{
+            "date_start":"2018-08-22T15:50:00",
+            "date_end":"2018-09-12T08:30:00"
+        }
+    }
+}
