@@ -5,39 +5,33 @@ import * as XLSX from 'xlsx';
 
 class Contract{
 
-  public createFile() {
+  private contract:ContractModel
 
-    let contract:ContractModel = jsonContract.contract
+  constructor() {
+    this.contract = jsonContract.contract
+  }
+
+  public formatData() {
 
     // Transform ISO date to human readable one
-    contract.rent.date_start = this.formatDate(contract.rent.date_start);
-    contract.rent.date_end = this.formatDate(contract.rent.date_end);
+    this.contract.rent.date_start = moment(this.contract.rent.date_start).format('DD/MM/YYYY à hh:mm')
+    this.contract.rent.date_end = moment(this.contract.rent.date_end).format('DD/MM/YYYY à hh:mm')
 
-    // Prepare contract data format for XLSX
-    let data = this.formatDataEngine(contract)
-
-    // XLSX Library Use
-    let ws = XLSX.utils.json_to_sheet(data, {skipHeader: true});
-
-    // This snippet allow to change the column size
-    let wscols = [
-      {wch:28},
-      {wch:28}
-    ];
-  
-    ws['!cols'] = wscols;
-    
-    let wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Fiche de location");
-    XLSX.writeFile(wb, "uploads/fiche_location.xlsx");
+    return this.contract
 
   }
 
-  private formatDate(date:string):string{
-      return  moment(date).format('DD/MM/YYYY à hh:mm');
+}
+
+class OutputFile{
+
+  private contract: ContractModel
+
+  constructor(cont: ContractModel) {
+    this.contract = cont;
   }
 
-  private formatDataEngine(contract: ContractModel):Array<object>{
+  private formatDataFile(contract: ContractModel):Array<object>{
 
     let items = [
       {"COL1":"", "COL2": ""},
@@ -62,6 +56,28 @@ class Contract{
 
   }
 
+  public createFile(){
+
+    // Prepare contract data format for XLSX
+    let data = this.formatDataFile(this.contract)
+
+    // XLSX Library Use
+    let ws = XLSX.utils.json_to_sheet(data, {skipHeader: true})
+
+    // This snippet allow to change the column size
+    let wscols = [
+      {wch:28},
+      {wch:28}
+    ]
+  
+    ws['!cols'] = wscols
+    
+    let wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, ws, "Fiche de location")
+    XLSX.writeFile(wb, "uploads/fiche_location.xlsx")
+  }
+
 }
 
-new Contract().createFile()
+let data = new Contract
+new OutputFile(data.formatData()).createFile()
