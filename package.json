@@ -9,7 +9,7 @@
   "author": "Fabrice Castagnet",
   "license": "ISC",
   "dependencies": {
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.2",
     "xlsx": "^0.14.3"
